@@ -3,6 +3,8 @@ import java.io.*;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JScrollBar;
+import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
 public class DocumindGUI {
@@ -10,6 +12,10 @@ public class DocumindGUI {
 	
 	private JFrame jFrame;
 	private JTextArea documentArea;
+	private JScrollPane scrollPane;
+	
+	private static final int FRAME_HEIGHT = 800;
+	private static final int FRAME_WIDTH = 800;
 
 	/**
 	 * @param args
@@ -17,8 +23,14 @@ public class DocumindGUI {
 	
 	public DocumindGUI() {
 		jFrame = new JFrame();
+		jFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		jFrame.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		
 		documentArea = new JTextArea();
-		jFrame.add(documentArea);
+		documentArea.setSize(FRAME_WIDTH, FRAME_HEIGHT);
+		documentArea.setLineWrap(true);
+		scrollPane = new JScrollPane(documentArea);
+		jFrame.add(scrollPane);
 	}
 	
 	public void openFile() throws IOException{
@@ -37,7 +49,7 @@ public class DocumindGUI {
 	}
 	
 	public void viewGUI(){
-		jFrame.pack();
+		//jFrame.pack();
 		jFrame.setVisible(true);
 	}
 	
