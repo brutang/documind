@@ -15,12 +15,25 @@ import javax.swing.JTextArea;
 
 public class DocumindGUI {
 
+	class ButtonListener implements ActionListener {
+		  ButtonListener() {
+		  }
+
+		  public void actionPerformed(ActionEvent e) {
+		    if (e.getActionCommand().equals("Get Highlighted Text")) {
+		      System.out.println(documentArea.getSelectedText());
+		      highlightedTextArea.setText(documentArea.getSelectedText());
+		    }
+		  }
+		}
 	
 	private JFrame frame;
 	private Container container;
 	private JTextArea documentArea;
 	private JScrollPane scrollPane;
 	private JButton getHighlightedButton;
+	private JTextArea highlightedTextArea;
+	private JScrollPane scrollPaneHighlight;
 	
 	private static final int FRAME_HEIGHT = 500;
 	private static final int FRAME_WIDTH = 500;
@@ -62,12 +75,25 @@ public class DocumindGUI {
 		gbc.weighty = 0;
 		gbc.fill = GridBagConstraints.NONE;
 		getHighlightedButton = new JButton("Get Highlighted Text");
+		getHighlightedButton.addActionListener(new ButtonListener());
 		gbl.setConstraints(getHighlightedButton, gbc);
+		
+		gbc.gridy = 1;
+		gbc.weightx = 1;
+		gbc.weighty = 1;
+		gbc.fill = GridBagConstraints.BOTH;
+		highlightedTextArea = new JTextArea();
+		highlightedTextArea.setSize(100, 100);
+		highlightedTextArea.setLineWrap(true);
+		highlightedTextArea.setEditable(false);
+		scrollPaneHighlight = new JScrollPane(highlightedTextArea);
+		gbl.setConstraints(scrollPaneHighlight, gbc);
+		
 		
 		//add components to container
 		container.add(scrollPane);
 		container.add(getHighlightedButton);
-		
+		container.add(scrollPaneHighlight);
 		
 		
 		/*documentArea = new JTextArea();
