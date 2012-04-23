@@ -5,12 +5,18 @@ import java.awt.GridBagLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.*;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+
+import LBJ2.nlp.seg.Token;
+
+import edu.illinois.cs.cogcomp.lbj.pos.POSTagPlain;
 
 public class DocumindGUI {
 
@@ -21,12 +27,16 @@ public class DocumindGUI {
 		  public void actionPerformed(ActionEvent e) {
 		    if (e.getActionCommand().equals("Get Highlighted Text")) {
 		      System.out.println(documentArea.getSelectedText());
+		      JOptionPane.showMessageDialog(frame, documentArea.getSelectedText());
 		    }
 		    else if (e.getActionCommand().equals("Open File")) {
 		    	openFile();
 		    }
 		    else if (e.getActionCommand().equals("Summarize Highlighted Text")) {
-		    	summaryArea.setText(Summarizer.summarizeText(curFile));
+		    	summaryArea.setText(TextRank.summarizeText(curFile));
+		    }
+		    else if (e.getActionCommand().equals("Part Of Speech Tagger")) {
+		    	handlePosButton();
 		    }
 		  }
 		}
@@ -41,6 +51,7 @@ public class DocumindGUI {
 	private JButton openFileButton;
 	private File curFile;
 	private JButton summarizeButton;
+	private JButton posButton;
 	
 	private static final int FRAME_HEIGHT = 500;
 	private static final int FRAME_WIDTH = 500;
@@ -68,7 +79,7 @@ public class DocumindGUI {
 		gbc.gridy = 0;
 		gbc.weightx = 1;
 		gbc.weighty = 3;
-		gbc.gridheight = 3;
+		gbc.gridheight = 4;
 		gbc.fill = GridBagConstraints.BOTH;
 		gbc.anchor = GridBagConstraints.WEST;
 		
@@ -98,8 +109,11 @@ public class DocumindGUI {
 		summarizeButton.addActionListener(new ButtonListener());
 		gbl.setConstraints(summarizeButton, gbc);
 		
+		posButton = new JButton("Part Of Speech Tagger");
+		posButton.addActionListener(new ButtonListener());
+		gbl.setConstraints(posButton, gbc);
+		
 		gbc.gridx = 0;
-		gbc.gridy = 3;
 		gbc.weightx = 1;
 		gbc.weighty = 1;
 		//gbc.gridheight = 200;
@@ -117,6 +131,7 @@ public class DocumindGUI {
 		container.add(getHighlightedButton);
 		container.add(openFileButton);
 		container.add(summarizeButton);
+		container.add(posButton);
 		container.add(scrollPaneSummary);
 	}
 	
@@ -144,6 +159,11 @@ public class DocumindGUI {
 		frame.pack();
 		frame.setExtendedState(Frame.MAXIMIZED_BOTH);
 		frame.setVisible(true);
+	}
+	
+	public void handlePosButton(){
+		HashMap<Token, String> parsedWords = TextRank.getPartOfSpeechTag(curFile);
+		summaryArea.setText(parsedWords.toString());
 	}
 	
 	public static void main(String args[]){
