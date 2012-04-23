@@ -4,8 +4,7 @@ import java.util.HashMap;
 import LBJ2.nlp.SentenceSplitter;
 import LBJ2.nlp.WordSplitter;
 import LBJ2.nlp.seg.PlainToTokenParser;
-
-import com.sun.xml.internal.messaging.saaj.packaging.mime.internet.HeaderTokenizer.Token;
+import LBJ2.nlp.seg.Token;
 
 import edu.illinois.cs.cogcomp.lbj.pos.POSTagPlain;
 import edu.illinois.cs.cogcomp.lbj.pos.POSTagger;
@@ -36,13 +35,15 @@ public class TextRank {
 		return null;
 	}
 	
-	public static HashMap<LBJ2.nlp.seg.Token, String> getPartOfSpeechTag(File file){
+	public static HashMap<Token, String> getPartOfSpeechTag(File file){
 		POSTagger tagger = new POSTagger();
 		PlainToTokenParser parser = new PlainToTokenParser( new WordSplitter( new SentenceSplitter(file.getPath())));
-		LBJ2.nlp.seg.Token word;
-		HashMap<LBJ2.nlp.seg.Token, String> parsedWords = new HashMap<LBJ2.nlp.seg.Token, String>();
+		Token word;
+		HashMap<Token, String> parsedWords = new HashMap<Token, String>();
 		
-		while((word =  (LBJ2.nlp.seg.Token) parser.next()) != null){
+		
+		
+		while((word =  (Token) parser.next()) != null){
 			String value = tagger.discreteValue(word);
 			System.out.println(word.form + ": " + value);
 			parsedWords.put(word, value);
@@ -51,13 +52,13 @@ public class TextRank {
 		return parsedWords;
 	}
 	
-	public static HashMap<LBJ2.nlp.seg.Token, String> getPartOfSpeechTagAdjNounOnly(File file){
+	public static HashMap<Token, String> getPartOfSpeechTagAdjNounOnly(File file){
 		POSTagger tagger = new POSTagger();
 		PlainToTokenParser parser = new PlainToTokenParser( new WordSplitter( new SentenceSplitter(file.getPath())));
-		LBJ2.nlp.seg.Token word;
-		HashMap<LBJ2.nlp.seg.Token, String> parsedWords = new HashMap<LBJ2.nlp.seg.Token, String>();
+		Token word;
+		HashMap<Token, String> parsedWords = new HashMap<Token, String>();
 		
-		while((word =  (LBJ2.nlp.seg.Token) parser.next()) != null){
+		while((word =  (Token) parser.next()) != null){
 			String value = tagger.discreteValue(word);
 			System.out.println(word.form + ": " + value);
 			if(value.contains("NN") || value.contains("JJ")){
