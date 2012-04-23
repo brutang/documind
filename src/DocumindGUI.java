@@ -162,7 +162,7 @@ public class DocumindGUI {
 	}
 	
 	public void handlePosButton(){
-		HashMap<Token, String> parsedWords = TextRank.getPartOfSpeechTag(curFile);
+		HashMap<Token, String> parsedWords = TextRank.getPartOfSpeechTagAdjNounOnly(curFile);
 		summaryArea.setText(parsedWords.toString());
 	}
 	

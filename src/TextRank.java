@@ -45,7 +45,24 @@ public class TextRank {
 		while((word =  (LBJ2.nlp.seg.Token) parser.next()) != null){
 			String value = tagger.discreteValue(word);
 			System.out.println(word.form + ": " + value);
-			parsedWords.put(word, tagger.discreteValue(word));
+			parsedWords.put(word, value);
+		}
+		
+		return parsedWords;
+	}
+	
+	public static HashMap<LBJ2.nlp.seg.Token, String> getPartOfSpeechTagAdjNounOnly(File file){
+		POSTagger tagger = new POSTagger();
+		PlainToTokenParser parser = new PlainToTokenParser( new WordSplitter( new SentenceSplitter(file.getPath())));
+		LBJ2.nlp.seg.Token word;
+		HashMap<LBJ2.nlp.seg.Token, String> parsedWords = new HashMap<LBJ2.nlp.seg.Token, String>();
+		
+		while((word =  (LBJ2.nlp.seg.Token) parser.next()) != null){
+			String value = tagger.discreteValue(word);
+			System.out.println(word.form + ": " + value);
+			if(value.contains("NN") || value.contains("JJ")){
+				parsedWords.put(word, tagger.discreteValue(word));
+			}
 		}
 		
 		return parsedWords;
